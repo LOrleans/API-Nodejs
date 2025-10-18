@@ -1,7 +1,5 @@
 # **API de Gestão de Inventário para E-commerce**
 
-**---------------------------------------------------------------------------------------------------------------------------------**
-
 ## Visão geral
 Este projeto é uma API RESTful desenvolvida em Node.js com Express, projetada para gerenciar as operações básicas de um sistema de e-commerce. Ela inclui funcionalidades para autenticação de usuários, gerenciamento de produtos, controle de usuários e processamento de pedidos. A API utiliza um sistema de autenticação baseado em JSON Web Tokens (JWT) e diferencia as permissões de acesso entre usuários comuns (customer) e administradores (manager). Para persistência de dados, o projeto utiliza um banco de dados simples baseado em arquivo JSON, o que o torna ideal para prototipagem e desenvolvimento rápido sem a necessidade de um serviço de banco de dados externo.
 
@@ -14,8 +12,6 @@ Este projeto é uma API RESTful desenvolvida em Node.js com Express, projetada p
 - *dotenv*: Para gerenciar variáveis de ambiente.
 - *short-uuid*: Para gerar IDs únicos para os registros.
 - *lowdb*: Para armazenamento dos dados no arquivo JSON.
-
-**---------------------------------------------------------------------------------------------------------------------------------**
 
 ## Funcionalidades Principais
 A API está estruturada em torno de quatro recursos principais:
@@ -38,8 +34,6 @@ A API está estruturada em torno de quatro recursos principais:
   - customer: Pode visualizar apenas os seus próprios pedidos.
   - manager: Pode visualizar todos os pedidos feitos no sistema.
 - Atualização de Status: Apenas usuários manager podem atualizar o status de um pedido (ex: de pending para shipped).
-
-**---------------------------------------------------------------------------------------------------------------------------------**
 
 ## Como começar
 Siga os passos abaixo para configurar e executar o projeto em seu ambiente local.
@@ -76,8 +70,6 @@ ou
 `node server.js`
 
 O servidor estará rodando em http://localhost:3000.
-
-**---------------------------------------------------------------------------------------------------------------------------------**
 
 ## Primeiro Uso
 
@@ -118,7 +110,6 @@ Para acessar rotas como /api/products, inclua o token no cabeçalho da requisiç
 
 **Agora você está pronto para explorar todas as funcionalidades da API!**
 
-**---------------------------------------------------------------------------------------------------------------------------------**
 ### Projetos futuros:
 Este projeto foi desenvolvido com lowdb, o que torna o banco de dados do projeto um ponto de melhoria.
 Dessa forma, em breve planejo publicar outra API em Nodejs com o uso de um banco de dados mais elaborado, assim como outros projetos que tenho em mente.
