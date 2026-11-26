@@ -35,6 +35,49 @@ A API está estruturada em torno de quatro recursos principais:
   - manager: Pode visualizar todos os pedidos feitos no sistema.
 - Atualização de Status: Apenas usuários manager podem atualizar o status de um pedido (ex: de pending para shipped).
 
+## Referência de endpoints
+
+Todas as rotas começam com `/api`. "Autenticado" significa enviar o cabeçalho `Authorization: Bearer <token>`.
+
+| Método | Rota | Acesso | Descrição |
+|---|---|---|---|
+| POST | `/api/register` | Público | Cria um usuário com papel `customer` e retorna o token |
+| POST | `/api/login` | Público | Autentica e retorna o token |
+| POST | `/api/users` | manager | Cria um usuário |
+| GET | `/api/users` | manager | Lista os usuários |
+| GET | `/api/users/:id` | manager | Busca um usuário |
+| PUT | `/api/users/:id` | manager | Atualiza um usuário |
+| DELETE | `/api/users/:id` | manager | Remove um usuário |
+| GET | `/api/products` | Autenticado | Lista os produtos |
+| GET | `/api/products/:id` | Autenticado | Busca um produto |
+| POST | `/api/products` | manager | Cria um produto |
+| PUT | `/api/products/:id` | manager | Atualiza um produto |
+| DELETE | `/api/products/:id` | manager | Remove um produto |
+| POST | `/api/orders` | customer | Cria um pedido (valida existência do produto e estoque) |
+| GET | `/api/orders` | Autenticado | customer vê os próprios pedidos; manager vê todos |
+| GET | `/api/orders/:id` | Autenticado | Busca um pedido (acesso negado a pedidos de outros clientes) |
+| PUT | `/api/orders/:id` | manager | Atualiza o status do pedido |
+
+### Corpo das requisições (validações)
+
+| Recurso | Campos |
+|---|---|
+| Usuário | `name` e `email` obrigatórios (e-mail válido), `password` com no mínimo 6 caracteres, `role` opcional (`customer` ou `manager`) |
+| Login | `email` e `password` obrigatórios |
+| Produto | `name` obrigatório, `price` maior que zero, `stock` inteiro maior ou igual a zero |
+| Pedido | `items`: lista com ao menos um item, cada um com `productId` e `quantity` inteira maior que zero |
+| Status do pedido | `status` obrigatório |
+
+### Códigos de resposta
+
+| Código | Quando |
+|---|---|
+| 201 | Recurso criado |
+| 400 | Dados inválidos, e-mail já cadastrado ou estoque insuficiente |
+| 401 | E-mail ou senha inválidos no login |
+| 403 | Acesso negado ao recurso |
+| 404 | Usuário, produto ou pedido não encontrado |
+
 ## Como começar
 Siga os passos abaixo para configurar e executar o projeto em seu ambiente local.
 
@@ -55,14 +98,15 @@ cd <NOME_DA_PASTA_DO_PROJETO>
 ou
 `yarn install`
 
-3. Configure as variáveis de ambiente: Crie um arquivo chamado .env na raiz do projeto e adicione as seguintes variáveis:
+3. Configure as variáveis de ambiente: copie o arquivo de exemplo e ajuste os valores (o `.env` real nunca deve ser versionado):
 ```
-### Porta em que o servidor irá rodar
-PORT=3000
+cp .env.example .env
+```
 
-### Chave secreta para gerar os tokens JWT (use uma string longa e segura)
-JWT_SECRET=sua_chave_secreta_super_segura
-```
+| Variável | Descrição |
+|---|---|
+| `PORT` | Porta em que o servidor irá rodar (padrão: 3000) |
+| `JWT_SECRET` | Chave secreta para assinar os tokens JWT. Use uma string longa e aleatória, por exemplo gerada com `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
 
 4. Inicie o servidor:
 `npm start`
